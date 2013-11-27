@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>FROM THE TOP NOW Y'ALL</title>
+  
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script src='http://api.tiles.mapbox.com/mapbox.js/v1.4.2/mapbox.js'></script>
+  <link href='http://api.tiles.mapbox.com/mapbox.js/v1.4.2/mapbox.css' rel='stylesheet' />
+  
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
+</head>
+<body>
+
+<style>
+  #map { position:absolute; top:0; bottom:0; right:300px; left:0; }
+  #info {
+      position:absolute; top: 0; right: 0;
+      bottom: 0; width: 1000px; background:#333; color: #fff;
+      padding:20px;
+  }
+  h1 { margin-top:0; }
+</style>
+
+
+
+<!--<style>
+.popup {
+    text-align: center;
+}
+.popup .slideshow {
+    width: 100%;
+}
+.popup .slideshow .image {
+    display: none;
+}
+.popup .slideshow .active {
+    display: block;
+}
+.popup .slideshow img {
+    width: 100%;
+}
+.popup .slideshow .caption {
+    background: #eee;
+    padding: 8px;
+}
+.popup .cycle {
+    height: 30px;
+    margin-top: 5px;
+    padding-top: 5px;
+}
+.popup .cycle a.prev {
+    float: left;
+}
+.popup .cycle a.next {
+    float: right;
+}
+</style>
+-->
+<div id='map'></div>
+<div id='info'></div>
+
+<script>
+var map = L.mapbox.map('map', 'ejmoller.Old_City');
+//
+
+var markerLayer = L.mapbox.markerLayer()
+    .loadURL('https://github.com/Brittanicus874/old_city_project/blob/master/points_nov26.geojson')
+    .addTo(map);
+
+//var geoJson = [{
+//    type: 'Feature',
+//    "geometry": { "type": "Point", "coordinates": [-77.03, 38.90]},
+//    "properties": {
+//        'title': 'Washington, D.C.',
+//
+//        // Store the image url and caption in an array
+//        'images': [
+//          ['http://www.konbini.com/fr/files/2013/03/thumb-fiction.jpg','The U.S. Capitol after the burning of Washington during the War of 1812'],
+//          ['https://i.imgur.com/xND1MND.jpg','Ford\'s Theatre in the 19th century, site of the 1865 assassination of President Lincoln'],
+//          ['https://i.imgur.com/EKJmqui.jpg','The National Cherry Blossom Festival is celebrated around the city each spring.']
+//        ]
+//    }
+//}, {
+//    type: 'Feature',
+//    "geometry": { "type": "Point", "coordinates": [-74.00, 40.71]},
+//    "properties": {
+//        'title': 'New York City',
+//        'images': [
+//          ['https://i.imgur.com/exemdwr.png','Peter Minuit is credited with the purchase of the island of Manhattan in 1626.'],
+//          ['https://i.imgur.com/LHNDBpf.jpg','During the mid-19th Century, Broadway was extended the length of Manhattan.'],
+//          ['http://upload.wikimedia.org/wikipedia/commons/e/e1/Boteco.jpg','Times Square has the highest annual attendance rate of any tourist attraction in the world.']
+//        ]
+//
+//    }
+//}];
+//
+map.markerLayer.getGeoJSON();
+
+map.markerLayer.on('click',function(e) {
+    e.layer.unbindPopup();
+
+    var feature = e.layer.feature;
+    var info = '<h1>' + feature.properties.name_en + '</h1>' +
+               '<p>' + feature.properties.name_ar + '</p>';
+
+    document.getElementById('info').innerHTML = info;
+});
+
+// Clear the tooltip when map is clicked
+map.on('click',function(e){
+    document.getElementById('info').innerHTML = '';
+});
+//
+//// Listen for individual marker clicks
+//map.markerLayer.on('click',function(e) {
+//    e.layer.unbindPopup();
+//
+//    var feature = e.layer.feature;
+//    var images = [feature.properties.images1,feature.properties.images2]
+//    var slideshowContent = '';
+// 
+//    for(var i = 0; i < images.length; i++) {
+//        var img = images[i];
+//
+//        slideshowContent += '<div class="image' + (i === 0 ? ' active' : '') + '">' +
+//                              '<img src="' + img[0] + '" />' +
+//                              '<div class="caption">' + img[1] + '</div>' +
+//                            '</div>';
+//    }
+//
+//    var popupContent = '<div id="' + feature.properties.id + '" class="popup">' +
+//                            '<h2>' + feature.properties.title + '</h2>' +
+//                            '<div class="slideshow">' +
+//                                slideshowContent +
+//                            '</div>' +
+//                            '<div class="cycle">' +
+//                                '<a href="#" class="prev" onclick="return moveSlide(\'prev\')">&laquo; Previous</a>' +
+//                                '<a href="#" class="next" onclick="return moveSlide(\'next\')">Next &raquo;</a>' +
+//                            '</div>'
+//                        '</div>';
+//
+//    document.getElementById('info').innerHTML = popupContent;
+//});    
+
+
+
+
+
+// This example uses jQuery to make selecting items in the slideshow easier.
+// Download it from http://jquery.com
+//function moveSlide(direction) {
+//    var $slideshow = $('.slideshow'),
+//        totalSlides = $slideshow.children().length;
+//
+//    if (direction === 'prev') {
+//        var $newSlide = $slideshow.find('.active').prev();
+//        if ($newSlide.index() < 0) {
+//            $newSlide = $('.image').last();
+//        }
+//    } else {
+//        var $newSlide = $slideshow.find('.active').next();
+//        if ($newSlide.index() < 0) {
+//            $newSlide = $('.image').first();
+//        }
+//    }
+//
+//    $slideshow.find('.active').removeClass('active').hide();
+//    $newSlide.addClass('active').show();
+//    return false;
+//}
+//
+
+//Clear the tooltip when map is clicked
+map.on('click',function(e){
+  document.getElementById('info').innerHTML = '';
+});
+
+</script>
+
+</body>
+</html>
+
